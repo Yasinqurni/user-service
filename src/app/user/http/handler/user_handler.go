@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -30,20 +29,6 @@ func (h *userHandlerImpl) Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, data)
 		return
 	}
-	fmt.Println(user)
-	// requestValid := middleware.UserValidateStruct(user)
-	// fmt.Println(requestValid)
-	// if !requestValid {
-
-	// 	describeError := response.DescribeError{
-	// 		Name:    "required",
-	// 		Address: "required",
-	// 		Email:   "required",
-	// 	}
-	// 	data := response.NewErrorResponseValidate(describeError, nil)
-	// 	c.JSON(http.StatusBadRequest, data)
-	// 	return
-	// }
 
 	err := h.userService.Create(&user)
 	if err != nil {

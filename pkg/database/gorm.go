@@ -9,26 +9,45 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitDB() (*gorm.DB, string) {
+type ConfigEnv struct {
+	DB       *gorm.DB
+	UserDB   string
+	PassDB   string
+	HostDB   string
+	NameDB   string
+	PortDB   string
+	PortAPP  string
+	PortGRPC string
+}
+
+func InitDB() *ConfigEnv {
 
 	godotenv.Load(".env")
 
-	dbUser := os.Getenv("DB_USER")
-	dbRootPass := os.Getenv("DB_PASS")
-	dbHost := os.Getenv("DB_HOST")
-	dbName := os.Getenv("DB_NAME")
-	dbPort := os.Getenv("DB_PORT")
-	Port := os.Getenv("PORT")
-	// sslmode := os.Getenv("SSL")
-	// timezone := os.Getenv("TIMEZONE")
+	var configEnv ConfigEnv
 
-	// dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
-	// 	dbHost, dbUser, dbRootPass, dbName, dbPort, sslmode, timezone)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbRootPass, dbHost, dbPort, dbName)
+	configEnv.UserDB = os.Getenv("DB_USER")
+	configEnv.PassDB = os.Getenv("DB_PASS")
+	configEnv.HostDB = os.Getenv("DB_HOST")
+	configEnv.NameDB = os.Getenv("DB_NAME")
+	configEnv.PortDB = os.Getenv("DB_PORT")
+	configEnv.PortAPP = os.Getenv("PORT")
+	configEnv.PortGRPC = os.Getenv("PORT_GRPC")
+
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		configEnv.UserDB,
+		configEnv.PassDB,
+		configEnv.HostDB,
+		configEnv.PortDB,
+		configEnv.NameDB,
+	)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
-	return db, Port
+
+	configEnv.DB = db
+
+	return &configEnv
 }

@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	db, _ := database.InitDB()
+	configEnv := database.InitDB()
 
-	seeder.UserSeed(db)
+	seeder.UserSeed(configEnv.DB)
 }

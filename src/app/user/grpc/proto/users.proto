@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "./pb";
+
+message UserRequest {
+  string ids= 1;
+}
+
+message UserResponse {
+  uint32 id= 1;
+  string name= 2;
+  string address= 3;
+  string email = 4;
+  string phone= 5;
+}
+
+message UserList {
+  repeated UserResponse users= 1;
+}
+
+service UserService {
+  rpc GetAllUser (UserRequest) returns (UserList);
+}
