@@ -1,3 +1,4 @@
+-- migrate:up
 -- +goose Up
 CREATE TABLE IF NOT EXISTS users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT ,
@@ -9,5 +10,6 @@ CREATE TABLE IF NOT EXISTS users (
     deleted_at TIMESTAMP NULL , PRIMARY KEY (id)
 );
 
+-- migrate:down
 -- +goose Down
 DROP TABLE users;
